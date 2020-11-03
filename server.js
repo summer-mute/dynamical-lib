@@ -1,15 +1,15 @@
 // Requiring necessary npm packages
-let express = require("express");
-let session = require("express-session");
+var express = require("express");
+var session = require("express-session");
 // Requiring passport as we've configured it
-let passport = require("./config/passport");
+var passport = require("./config/passport");
 
 // Setting up port and requiring models for syncing
-let PORT = process.env.PORT || 8080;
-let db = require("./models");
+var PORT = process.env.PORT || 8080;
+var db = require("./models");
 
 // Creating express app and configuring middleware needed for authentication
-let app = express();
+var app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
