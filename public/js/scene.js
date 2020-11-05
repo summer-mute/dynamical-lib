@@ -31,8 +31,8 @@ function Element( id, x, y, z, ry ) {
 
 
 
-const videoIdArr = ['SJOz3qjfQXU','Y2-xZ-1HE-Q','L9l8zCOwEII','TmKh7lAwnBI'];
-const videosName = ['nasa', 'nasa1', 'bad bunny', 'sofia'];
+const videoIdArr = ['ea2WoUtbzuw','Y2-xZ-1HE-Q','L9l8zCOwEII','TmKh7lAwnBI'];
+const videosName = ['Clair de Lune (Extended)', 'nasa1', 'bad bunny', 'sofia'];
 
 
 
@@ -102,7 +102,6 @@ function renderButtons() {
     $("#buttons-area").empty();
 
     //this will call the database for the name of the first four videos saved
-    // Looping through the array of movies
     for (var i = 0; i < videosName.length; i++) {
 
       // Then dynamicaly generating buttons for each movie in the array
@@ -117,16 +116,34 @@ function renderButtons() {
     }
   }
 
+
+function saveVideo(video){
+    $.post("/api/video", video, function(){
+        console.log(video)
+    })
+}
+
+ //searching for a video and adding it to the animation 
 $("#searchbtn").on("click", function(event){
     event.preventDefault();
     const searchTerm = $("#searchtext").val().trim();
+    //call to the video api that gets data
     $.get("/api/video/"+searchTerm).then(data=>{
-        $("#searchtext").empty();
+        $("#searchtext").val("");
+        //clearing the container for the new animation
         $("#container").html("<div id=\"blocker\"></div>")
-        const title = data.items[0].snippet.title;
-        videosName.unshift(title);
-        const videoId = data.items[0].id.videoId;
-        videoIdArr.unshift(videoId);
+
+        //saving the title and data as an object
+        const newVideo = {
+            title: data.items[0].snippet.title,
+            videoId: data.items[0].id.videoId,
+        }
+
+        saveVideo(newVideo)
+
+        videosName.unshift(newVideo.title);
+        videoIdArr.unshift(newVideo.videoId);
+
         init(videoIdArr);
         animate();
         renderButtons();
@@ -136,6 +153,29 @@ $("#searchbtn").on("click", function(event){
 
 })
 
+//this function gets the saved videos from the database for the user
+//it the adds it to the array that displays the videos and button
+function retrieveVideos(){
+    $.get("/api/videos").then(data=>{
+        for (let i=0; i<data.length; i++){
+            console.log(data[i].title)
+            videosName.unshift(data[i].title);
+            videoIdArr.unshift(data[i].videoId);
+        }
+        console.log(videosName);
+        $("#container").html("<div id=\"blocker\"></div>")
+        init(videoIdArr);
+        animate();
+        renderButtons;
+    })
+}
+
+ //searching for a video and adding it to the animation 
+ $("#savedbtn").on("click", function(event){
+    event.preventDefault();
+    //calls the fuction to retrieve the information
+    retrieveVideos()
+    })
 
 
 init(videoIdArr);

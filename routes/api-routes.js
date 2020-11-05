@@ -58,4 +58,25 @@ module.exports = function(app) {
     })
   })
 
+  //this function will add a video to the videos table
+  app.post("/api/video", function(req, res){
+    db.Video.create({
+      title: req.body.title,
+      videoId: req.body.videoId,
+      UserId: req.user.id
+    }).then(function(dbVideo){
+      res.json(dbVideo)
+    });
+  });
+
+  app.get("/api/videos", function(req, res){
+    db.Video.findAll({
+      where: {
+        UserId: req.user.id
+      }
+    }).then(function(dbVideo){
+      res.json(dbVideo);
+    })
+  })
+
 };

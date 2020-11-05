@@ -1,4 +1,4 @@
-module.exports = function(sequelize, Datatypes) {
+module.exports = function(sequelize, DataTypes) {
     const Video = sequelize.define('Video',{
         title: {
             type: DataTypes.STRING,
