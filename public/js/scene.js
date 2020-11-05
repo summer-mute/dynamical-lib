@@ -1,118 +1,144 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/build/three.module.js';
 
-function main(){
-    const canvas = document.querySelector('#animation');
-    const renderer = new THREE.WebGLRenderer({canvas});
+import { TrackballControls } from 'https://cdn.jsdelivr.net/npm/three@0.122.0/examples/jsm/controls/TrackballControls.js';
+import { CSS3DRenderer, CSS3DObject } from 'https://cdn.jsdelivr.net/npm/three@0.122.0/examples/jsm/renderers/CSS3DRenderer.js';
 
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xAAAAAA);
 
-    const fov = 40;
-    const aspect = 2;
-    const near = 0.1;
-    const far = 500;
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z=120;
+let camera, scene, renderer;
+let controls;
 
-    {
-        const color = 0xFFFFFF;
-        const intensity = 1;
-        const light = new THREE.DirectionalLight(color, intensity);
-        light.position.set(-1, 2, 4);
-        scene.add(light);
-    }
+function Element( id, x, y, z, ry ) {
 
-    const objects = [];
-    const spread = 15;
-    
-    function addObject(x, y, obj) {
-    obj.position.x = x * spread;
-    obj.position.y = y * spread;
-    
-    scene.add(obj);
-    objects.push(obj);
-    }
+    const div = document.createElement( 'div' );
+    div.style.width = '480px';
+    div.style.height = '360px';
+    div.style.backgroundColor = '#000';
 
-    function createMaterial() {
-        const material = new THREE.MeshPhongMaterial({
-        side: THREE.DoubleSide,
-        });
-    
-        const hue = Math.random();
-        const saturation = 1;
-        const luminance = .5;
-        material.color.setHSL(hue, saturation, luminance);
-    
-        return material;
-    }
+    const iframe = document.createElement( 'iframe' );
+    iframe.style.width = '480px';
+    iframe.style.height = '360px';
+    iframe.style.border = '0px';
+    iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
+    div.appendChild( iframe );
 
-    function addSolidGeometry(x, y, geometry) {
-    const mesh = new THREE.Mesh(geometry, createMaterial());
-    addObject(x, y, mesh);
-    }
+    const object = new CSS3DObject( div );
+    object.position.set( x, y, z );
+    object.rotation.y = ry;
 
-    {
-        const width = 8;
-        const height = 8;
-        const depth = 8;
-        addSolidGeometry(-2, 2, new THREE.BoxBufferGeometry(width, height, depth));
-      }
-      {
-        const radius = 7;
-        const segments = 24;
-        addSolidGeometry(-1, 2, new THREE.CircleBufferGeometry(radius, segments));
-      }
-      {
-        const radius = 6;
-        const height = 8;
-        const segments = 16;
-        addSolidGeometry(0, 2, new THREE.ConeBufferGeometry(radius, height, segments));
-      }
-      {
-        const radiusTop = 4;
-        const radiusBottom = 4;
-        const height = 8;
-        const radialSegments = 12;
-        addSolidGeometry(1, 2, new THREE.CylinderBufferGeometry(radiusTop, radiusBottom, height, radialSegments));
-      }
-      {
-        const radius = 7;
-        addSolidGeometry(2, 2, new THREE.DodecahedronBufferGeometry(radius));
-      }
+    return object;
 
-      function resizeRendererToDisplaySize(renderer) {
-        const canvas = renderer.domElement;
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
-        const needResize = canvas.width !== width || canvas.height !== height;
-        if (needResize) {
-          renderer.setSize(width, height, false);
-        }
-        return needResize;
-      }
+};
 
-      function render(time) {
-        time *= 0.001;
+
+
+const videoIdArr = ['SJOz3qjfQXU','Y2-xZ-1HE-Q','L9l8zCOwEII','TmKh7lAwnBI'];
+const videosName = ['nasa', 'nasa1', 'bad bunny', 'sofia'];
+
+
+
+function init(array) {
     
-        if (resizeRendererToDisplaySize(renderer)) {
-          const canvas = renderer.domElement;
-          camera.aspect = canvas.clientWidth / canvas.clientHeight;
-          camera.updateProjectionMatrix();
-        }
-    
-        objects.forEach((obj, ndx) => {
-          const speed = .1 + ndx * .05;
-          const rot = time * speed;
-          obj.rotation.x = rot;
-          obj.rotation.y = rot;
-        });
-    
-        renderer.render(scene, camera);
-    
-        requestAnimationFrame(render);
-      }
-    
-      requestAnimationFrame(render);
+
+    const container = document.getElementById( 'container' );
+
+    camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 5000 );
+    camera.position.set( 500, 350, 750 );
+
+    scene = new THREE.Scene();
+
+    renderer = new CSS3DRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    container.appendChild( renderer.domElement );
+
+    const group = new THREE.Group();
+    group.add( new Element( array[0], 0, 0, 240, 0 ) );
+    group.add( new Element( array[1], 240, 0, 0, Math.PI / 2 ) );
+    group.add( new Element( array[2], 0, 0, - 240, Math.PI ) );
+    group.add( new Element( array[3], - 240, 0, 0, - Math.PI / 2 ) );
+    scene.add( group );
+
+    controls = new TrackballControls( camera, renderer.domElement );
+    controls.rotateSpeed = 4;
+
+    window.addEventListener( 'resize', onWindowResize, false );
+
+    // Block iframe events when dragging camera
+
+    const blocker = document.getElementById( 'blocker' );
+    blocker.style.display = 'none';
+
+    controls.addEventListener( 'start', function () {
+
+        blocker.style.display = '';
+
+    } );
+    controls.addEventListener( 'end', function () {
+
+        blocker.style.display = 'none';
+
+    } );
+
 }
 
-main();
+function onWindowResize() {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+function animate() {
+
+    requestAnimationFrame( animate );
+    controls.update();
+    renderer.render( scene, camera );
+
+}
+
+function renderButtons() {
+
+    // clearing city button before creating new ones
+    $("#buttons-area").empty();
+
+    //this will call the database for the name of the first four videos saved
+    // Looping through the array of movies
+    for (var i = 0; i < videosName.length; i++) {
+
+      // Then dynamicaly generating buttons for each movie in the array
+      var a = $("<button>");
+      a.addClass("city-btn btn btn-outline-secondary btn-block");
+      // Adding a data-attribute
+      a.attr("data-name", videosName[i]);
+      // Providing the text
+      a.text(videosName[i]);
+      // Adding the button to the buttons-area div
+      $("#buttons-area").append(a);      
+    }
+  }
+
+$("#searchbtn").on("click", function(event){
+    event.preventDefault();
+    const searchTerm = $("#searchtext").val().trim();
+    $.get("/api/video/"+searchTerm).then(data=>{
+        $("#searchtext").empty();
+        $("#container").html("<div id=\"blocker\"></div>")
+        const title = data.items[0].snippet.title;
+        videosName.unshift(title);
+        const videoId = data.items[0].id.videoId;
+        videoIdArr.unshift(videoId);
+        init(videoIdArr);
+        animate();
+        renderButtons();
+    })
+    
+   
+
+})
+
+
+
+init(videoIdArr);
+
+animate();
+renderButtons()
