@@ -34,10 +34,11 @@ module.exports = function(app) {
       height: req.body.height,
       hexColor: req.body.hexColor,
       yRotation: req.body.yRotation,
-      xRotation: req.body.xRotation
+      xRotation: req.body.xRotation,
+      UserId: req.user.id
     })
-    .then(function(){
-      res.status(200);
+    .then(function(data){
+      res.status(200).json(data);
     })
     .catch(function(err) {
       res.status(401).json(err);
