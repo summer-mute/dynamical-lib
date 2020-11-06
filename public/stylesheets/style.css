@@ -10,4 +10,8 @@ form.login {
   justify-content: center;
 }
 
+#savedbtn {
+  margin-left: 10px;
+}
+
 @charset "UTF-8"

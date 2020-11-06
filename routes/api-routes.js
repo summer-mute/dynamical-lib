@@ -1,6 +1,8 @@
 // Requiring our models and passport as we've configured it
-var db = require("../models");
-var passport = require("../config/passport");
+const db = require("../models");
+const passport = require("../config/passport");
+require('dotenv').config();
+const axios = require('axios').default;
 
 module.exports = function(app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -100,4 +102,35 @@ module.exports = function(app) {
       });
     }
   });
+
+  app.get("/api/video/:search", function(req, res){
+    axios.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q="+req.params.search+"&key="+process.env.YOUTUBEKEY+"&maxResults=1")
+    .then(function(response){
+      res.json(response.data);
+    }).catch(function (error){
+      console.log(error);
+    })
+  })
+
+  //this function will add a video to the videos table
+  app.post("/api/video", function(req, res){
+    db.Video.create({
+      title: req.body.title,
+      videoId: req.body.videoId,
+      UserId: req.user.id
+    }).then(function(dbVideo){
+      res.json(dbVideo)
+    });
+  });
+
+  app.get("/api/videos", function(req, res){
+    db.Video.findAll({
+      where: {
+        UserId: req.user.id
+      }
+    }).then(function(dbVideo){
+      res.json(dbVideo);
+    })
+  })
+
 };
