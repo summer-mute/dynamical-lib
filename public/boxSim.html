@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Box Simulation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link href="stylesheets/style.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r122/three.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r122/three.module.js"></script>
+  
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/logout">
+          Logout
+       </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <!-- add nav bar with links to other simulations  -->
+      <h2>Welcome <span class="member-name"></span></h2>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6" >  
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="length">Length: </span>
+                        </div>
+                        <input type="text" id = "length-input" class="form-control" placeholder="must be > 0" aria-label="length-input" aria-describedby="length-input">
+                    </div>        
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="width">Width: </span>
+                        </div>
+                        <input type="text" id = "width-input" class="form-control" placeholder="must be > 0" aria-label="width-input" aria-describedby="width-input">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="height">Height: </span>
+                        </div>
+                        <input type="text" id = "height-input" class="form-control" placeholder="must be > 0" aria-label="height-input" aria-describedby="height-input">
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Saved Profiles
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Profile 1</a>
+                        <a class="dropdown-item" href="#">Profile 2</a>
+                        <a class="dropdown-item" href="#">Profile 3</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" >
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="hex">Hex Color: </span>
+                        </div>
+                        <input type="color" id = "hex-input" class="form-control" placeholder="hex-code" aria-label="hex-color-input" aria-describedby="hex-color-input">
+                    </div>        
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="x-rotation">x-rotation: </span>
+                        </div>
+                        <input type="number" id = "x-input" class="form-control" placeholder="suggest 0<x<1" aria-label="x-input" aria-describedby="x-input">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="y-rotation">y-rotation: </span>
+                        </div>
+                        <input type="number" id = "y-input" class="form-control" placeholder="suggest 0<y<1" aria-label="y-input" aria-describedby="y-input">
+                    </div>
+                    <button type="button" id="updateSim" class="btn btn-primary">Update Simulation</button>
+                    <br>
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                    <button id = "save-button" class="btn btn-outline-secondary" type="button">Save Parameters</button>
+                    </div>
+                    <input type="text" id = "profile-name" class="form-control" placeholder="Profile Name" aria-label="" aria-describedby="profile-name">
+                </div>
+                  
+            </div>
+        </div>
+
+        <div class="col-md-6" >
+            <canvas id = "animation"></canvas>
+        </div>
+    </div>
+
+    
+
+  <script type="text/javascript" src="js/members.js"></script>
+  <script type = "module" src ="js/boxSim.js"></script>
+
+</body>
+
+</html>

@@ -28,6 +28,25 @@ module.exports = function(app) {
       });
   });
 
+  app.post("/api/boxSim",function(req,res){
+    db.BoxProfile.create({
+      name: req.body.name,
+      length: req.body.length,
+      width: req.body.width,
+      height: req.body.height,
+      hexColor: req.body.hexColor,
+      yRotation: req.body.yRotation,
+      xRotation: req.body.xRotation,
+      UserId: req.user.id
+    })
+    .then(function(data){
+      res.status(200).json(data);
+    })
+    .catch(function(err) {
+      res.status(401).json(err);
+    });
+  });
+
   // Route for logging user out
   app.get("/logout", function(req, res) {
     req.logout();

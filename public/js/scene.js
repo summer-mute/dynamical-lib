@@ -7,6 +7,7 @@ import { CSS3DRenderer, CSS3DObject } from 'https://cdn.jsdelivr.net/npm/three@0
 let camera, scene, renderer;
 let controls;
 
+//creates the element that displays the videos
 function Element( id, x, y, z, ry ) {
 
     const div = document.createElement( 'div' );
@@ -30,9 +31,9 @@ function Element( id, x, y, z, ry ) {
 };
 
 
-
-const videoIdArr = ['ea2WoUtbzuw','Y2-xZ-1HE-Q','L9l8zCOwEII','TmKh7lAwnBI'];
-const videosName = ['Clair de Lune (Extended)', 'nasa1', 'bad bunny', 'sofia'];
+//initial videos in the animation
+const videoIdArr = ['ea2WoUtbzuw','PWgvGjAhvIw','L9l8zCOwEII','oRdxUFDoQe0'];
+const videosName = ['Clair de Lune (Extended)', 'OutKast - Hey Ya! (Official Music Video)', 'Clairo - Sofia', 'Michael Jackson - Beat It (Official Video)'];
 
 
 
@@ -96,15 +97,16 @@ function animate() {
 
 }
 
+//renders buttons of saved videos
 function renderButtons() {
 
-    // clearing city button before creating new ones
+    // clearing buttons area before creating new ones
     $("#buttons-area").empty();
 
     //this will call the database for the name of the first four videos saved
     for (var i = 0; i < videosName.length; i++) {
 
-      // Then dynamicaly generating buttons for each movie in the array
+      // Then dynamicaly generating buttons for each video in the array
       var a = $("<button>");
       a.addClass("city-btn btn btn-outline-secondary btn-block");
       // Adding a data-attribute
@@ -138,9 +140,9 @@ $("#searchbtn").on("click", function(event){
             title: data.items[0].snippet.title,
             videoId: data.items[0].id.videoId,
         }
-
+        //save the video in the database
         saveVideo(newVideo)
-
+        //push into the arrays used to display
         videosName.unshift(newVideo.title);
         videoIdArr.unshift(newVideo.videoId);
 
@@ -154,7 +156,7 @@ $("#searchbtn").on("click", function(event){
 })
 
 //this function gets the saved videos from the database for the user
-//it the adds it to the array that displays the videos and button
+//it them adds it to the array that displays the videos and button
 function retrieveVideos(){
     $.get("/api/videos").then(data=>{
         for (let i=0; i<data.length; i++){
@@ -170,7 +172,7 @@ function retrieveVideos(){
     })
 }
 
- //searching for a video and adding it to the animation 
+ //when the save button is clicked the saved videos appear
  $("#savedbtn").on("click", function(event){
     event.preventDefault();
     //calls the fuction to retrieve the information
