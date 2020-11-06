@@ -1,4 +1,6 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/build/three.module.js';
+import { TrackballControls } from 'https://cdn.jsdelivr.net/npm/three@0.122.0/examples/jsm/controls/TrackballControls.js';
+import { CSS3DRenderer, CSS3DObject } from 'https://cdn.jsdelivr.net/npm/three@0.122.0/examples/jsm/renderers/CSS3DRenderer.js';
 
 $(document).ready(function() {
     let saveProfile = $("#save-button");
