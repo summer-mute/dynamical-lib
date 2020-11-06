@@ -166,7 +166,7 @@ function retrieveVideos(){
         $("#container").html("<div id=\"blocker\"></div>")
         init(videoIdArr);
         animate();
-        renderButtons;
+        renderButtons();
     })
 }
 
