@@ -108,9 +108,9 @@ function renderButtons() {
 
       // Then dynamicaly generating buttons for each video in the array
       var a = $("<button>");
-      a.addClass("city-btn btn btn-outline-secondary btn-block");
+      a.addClass("video-btn btn btn-outline-secondary btn-block");
       // Adding a data-attribute
-      a.attr("data-name", videosName[i]);
+      a.attr("data-name", videoIdArr[i]);
       // Providing the text
       a.text(videosName[i]);
       // Adding the button to the buttons-area div
@@ -179,6 +179,17 @@ function retrieveVideos(){
     retrieveVideos()
     })
 
+//event listener for buttons already created
+$(document).on("click", ".video-btn", function() {
+    var id = $(this).attr("data-name");
+    var title = $(this).text();
+    videoIdArr.unshift(id);
+    videosName.unshift(title);
+    $("#container").html("<div id=\"blocker\"></div>")
+    init(videoIdArr);
+    animate();
+
+});
 
 init(videoIdArr);
 
