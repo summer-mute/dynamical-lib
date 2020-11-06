@@ -41,28 +41,25 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="length">Length: </span>
                         </div>
-                        <input type="text" id = "length-input" class="form-control" placeholder="must be > 0" aria-label="length-input" aria-describedby="length-input">
+                        <input type="number" id = "length-input" class="form-control" value="2" placeholder="" aria-label="length-input" aria-describedby="length-input">
                     </div>        
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="width">Width: </span>
                         </div>
-                        <input type="text" id = "width-input" class="form-control" placeholder="must be > 0" aria-label="width-input" aria-describedby="width-input">
+                        <input type="number" id = "width-input" class="form-control" value = "2" placeholder="" aria-label="width-input" aria-describedby="width-input">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="height">Height: </span>
                         </div>
-                        <input type="text" id = "height-input" class="form-control" placeholder="must be > 0" aria-label="height-input" aria-describedby="height-input">
+                        <input type="number" id = "height-input" class="form-control" value="2" placeholder="" aria-label="height-input" aria-describedby="height-input">
                     </div>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Saved Profiles
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Profile 1</a>
-                        <a class="dropdown-item" href="#">Profile 2</a>
-                        <a class="dropdown-item" href="#">Profile 3</a>
+                        <div class="dropdown-menu" id="profiles-menu" aria-labelledby="dropdownMenuButton">
                         </div>
                     </div>
                 </div>
@@ -71,21 +68,21 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="hex">Hex Color: </span>
                         </div>
-                        <input type="color" id = "hex-input" class="form-control" placeholder="hex-code" aria-label="hex-color-input" aria-describedby="hex-color-input">
+                        <input type="color" id="hex-input" value="#44aa88" class="form-control" placeholder="hex-code" aria-label="hex-color-input" aria-describedby="hex-color-input">
                     </div>        
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="x-rotation">x-rotation: </span>
                         </div>
-                        <input type="number" id = "x-input" class="form-control" placeholder="suggest 0<x<1" aria-label="x-input" aria-describedby="x-input">
+                        <input type="number" step = "0.01" id = "x-input" value="0.02" class="form-control" placeholder="suggest 0<x<1" aria-label="x-input" aria-describedby="x-input">
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="y-rotation">y-rotation: </span>
                         </div>
-                        <input type="number" id = "y-input" class="form-control" placeholder="suggest 0<y<1" aria-label="y-input" aria-describedby="y-input">
+                        <input type="number" step ="0.01" id = "y-input" value="0.01" class="form-control" placeholder="suggest 0<y<1" aria-label="y-input" aria-describedby="y-input">
                     </div>
-                    <button type="button" id="updateSim" class="btn btn-primary">Update Simulation</button>
+                    <button type="button" id="updateSim" class="btn btn-primary">Reset Simulation</button>
                     <br>
                     <br>
                 </div>
