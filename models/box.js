@@ -37,17 +37,17 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       yRotation: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate:{
-            isNumeric:true
-        }
+          isFloat:true
+        } 
       },
       xRotation: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false,
         validate:{
-            isNumeric:true
+          isFloat:true
         }
       }
     })

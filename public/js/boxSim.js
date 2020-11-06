@@ -12,7 +12,6 @@ var yInput = $("input#y-input");
 
 $(document).ready(function() {
     
-    
     //load saved profiles 
     $.get("/api/boxSim").then(function(data) {
         //update name of dropdown, also give an attribute for the profileID
@@ -35,32 +34,6 @@ $(document).ready(function() {
         });
     });
 
-    
-    //need to add button listner when they hit save 
-    saveProfile.on("click",function(event){
-        event.preventDefault();
-        let profileData = {
-            name:profileName.val().trim(),
-            length:lengthInput.val().trim(),
-            width: widthInput.val().trim(),
-            height: heightInput.val().trim(),
-            hexColor: hexInput.val().trim(),
-            yRotation: yInput.val().trim(),
-            xRotation: xInput.val().trim()
-        }
-        if(!profileData.name||!profileData.length||!profileData.width||!profileData.height||!profileData.hexColor||!profileData.xRotation||!profileData.yRotation){
-            alert("Please enter all parameters before submitting");
-        }
-
-        sendProfile(profileData);
-    });
-
-    // This file just does a GET request to figure out which user is logged in
-    // and updates the HTML on the page
-    $.get("/api/user_data").then(function(data) {
-      $(".member-name").text(data.email);
-    });
-
     //post once profile is saved w/ unique name
     function sendProfile(data){
         $.post("/api/boxSim",{
@@ -76,6 +49,33 @@ $(document).ready(function() {
             alert("You have successfully saved the profile: "+data.name);
         });
     }
+
+    //button listner when they hit save 
+    saveProfile.on("click",function(event){
+        event.preventDefault();
+        console.log("Rotations: "+yInput.val()+" " +xInput.val())
+        let profileData = {
+            name:profileName.val().trim(),
+            length:lengthInput.val().trim(),
+            width: widthInput.val().trim(),
+            height: heightInput.val().trim(),
+            hexColor: hexInput.val().trim(),
+            yRotation: yInput.val(),
+            xRotation: xInput.val()
+        }
+        if(!profileData.name||!profileData.length||!profileData.width||!profileData.height||!profileData.hexColor||!profileData.xRotation||!profileData.yRotation){
+            alert("Please enter all parameters before submitting");
+        }
+
+        sendProfile(profileData);
+    });
+
+    // This file just does a GET request to figure out which user is logged in
+    // and updates the HTML on the page
+    $.get("/api/user_data").then(function(data) {
+      $(".member-name").text(data.email);
+    });
+
 });
 
 let camera, scene, renderer;
