@@ -2,32 +2,49 @@
 <html lang="en">
 
 <head>
-  <title>Passport Authentication</title>
+  <title>Home Page</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+
   <link href="stylesheets/style.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r122/three.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r122/three.module.js"></script>
+  
 </head>
 
 <body>
   <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/logout">
-        Logout
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/logout">
+          Logout
+       </a>
+       <a class="navbar-brand" href="/boxSim.html">
+        Beginner Box Simulation
       </a>
-    </div>
-  </div>
-</nav>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <h2>Welcome <span class="member-name"></span></h2>
+      <a class="navbar-brand" href="/videos.html">
+        Videos Simulation
+      </a>
       </div>
     </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <!-- add nav bar with links to other simulations  -->
+      <div class="col-md-6" >
+        <h2>Welcome <span class="member-name"></span></h2>
+      <div id ="parameters">
+      </div>
+      <div class="col-md-6" >
+        <canvas id = "animation"></canvas>
+      </div>
+    
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="js/members.js"></script>
 
 </body>

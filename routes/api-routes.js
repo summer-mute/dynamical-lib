@@ -1,6 +1,8 @@
 // Requiring our models and passport as we've configured it
-var db = require("../models");
-var passport = require("../config/passport");
+const db = require("../models");
+const passport = require("../config/passport");
+require('dotenv').config();
+const axios = require('axios').default;
 
 module.exports = function(app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -26,11 +28,65 @@ module.exports = function(app) {
       });
   });
 
+  app.post("/api/boxSim",function(req,res){
+    db.BoxProfile.create({
+      name: req.body.name,
+      length: req.body.length,
+      width: req.body.width,
+      height: req.body.height,
+      hexColor: req.body.hexColor,
+      yRotation: req.body.yRotation,
+      xRotation: req.body.xRotation,
+      UserId: req.user.id
+    })
+    .then(function(data){
+      res.status(200).json(data);
+    })
+    .catch(function(err) {
+      res.status(401).json(err);
+    });
+  });
+
   // Route for logging user out
   app.get("/logout", function(req, res) {
     req.logout();
     res.redirect("/");
   });
+
+  app.get("/api/boxSim",function(req,res){
+    if (!req.user) {
+      // The user is not logged in, send back an empty object
+      res.json({});
+    } else {
+      // Otherwise find all boxProfile where user.id matches 
+      db.BoxProfile.findAll({
+        where:{
+          UserId: req.user.id
+        }
+      }).then(function(data){
+        console.log(data);
+        res.json(data);
+      });
+    }
+  });
+
+  app.get("/api/boxSim/:id",function(req,res){
+    if (!req.user) {
+      // The user is not logged in, send back an empty object
+      res.json({});
+    } else {
+      // Otherwise find all boxProfile where boxProfile.id matches 
+      db.BoxProfile.findOne({
+        where:{
+          id: req.params.id
+        }
+      }).then(function(data){
+        console.log(data);
+        res.json(data);
+      });
+    }
+  });
+
 
   // Route for getting some data about our user to be used client side
   app.get("/api/user_data", function(req, res) {
@@ -46,4 +102,35 @@ module.exports = function(app) {
       });
     }
   });
+
+  app.get("/api/video/:search", function(req, res){
+    axios.get("https://www.googleapis.com/youtube/v3/search?part=snippet&q="+req.params.search+"&key="+process.env.YOUTUBEKEY+"&maxResults=1")
+    .then(function(response){
+      res.json(response.data);
+    }).catch(function (error){
+      console.log(error);
+    })
+  })
+
+  //this function will add a video to the videos table
+  app.post("/api/video", function(req, res){
+    db.Video.create({
+      title: req.body.title,
+      videoId: req.body.videoId,
+      UserId: req.user.id
+    }).then(function(dbVideo){
+      res.json(dbVideo)
+    });
+  });
+
+  app.get("/api/videos", function(req, res){
+    db.Video.findAll({
+      where: {
+        UserId: req.user.id
+      }
+    }).then(function(dbVideo){
+      res.json(dbVideo);
+    })
+  })
+
 };

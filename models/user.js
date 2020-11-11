@@ -27,5 +27,19 @@ module.exports = function(sequelize, DataTypes) {
   User.addHook("beforeCreate", function(user) {
     user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
   });
+  User.associate = function(models){
+    User.hasMany(models.Video,{
+      onDelete: "cascade"
+    });
+  }
+
+
+  User.associate = function(models) {
+    // Associating user with box models
+    // When an Author is deleted, also delete any associated Posts
+    User.hasMany(models.BoxProfile, {
+      onDelete: "cascade"
+    });
+  };
   return User;
 };
